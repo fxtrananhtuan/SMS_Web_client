@@ -1,0 +1,55 @@
+﻿@model IEnumerable<SMS_Web_client.ServiceReference1.DTO_Customer>
+
+@{
+    ViewBag.Title = "ListCustomer";
+}
+
+<h2>ListCustomer</h2>
+
+<p>
+    @Html.ActionLink("Add Customer", "Index")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Phone)
+        </td>
+        <td>
+            @Html.ActionLink("Delete", "Delete", new { id=item.Phone })
+        </td>
+    </tr>
+    
+}
+</table>
+
+@Html.TextBox("txtValue", null, new { placeholder = "Input value" })
+<input type="button" value="Send" id="cmd_send" />
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    $('#cmd_send').click(function () {
+        var url = "/SMS/Send";
+        var txtValue = $('#txtValue').val();
+        $.get(url, { input: txtValue }, function (data) {
+            if (data == "OK") {
+                $("#result4").html("<span style='color:green'>Email had sent! check your email</span>");
+            }
+            else {
+                $("#result4").html("<span style='color:red'>check your input</span>");
+            }
+            if (data == "error") {
+                $("#result4").html("<span style='color:red'>System error</span>");
+            }
+        });
+    })
+</script>
